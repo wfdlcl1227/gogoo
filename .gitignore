@@ -1,0 +1,5 @@
+.settings/
+target/
+.classpatch
+.project
+.tern-project
