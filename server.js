@@ -31,7 +31,7 @@ server.listen(8888);
 
 
 var options = {
-        target: 'http://www.google.com', // 目标主机
+        target: 'http://www.baidu.com', // 目标主机
         changeOrigin: true,               // 需要虚拟主机站点
     };
 var exampleProxy = proxy(options);  //开启代理功能，并加载配置
