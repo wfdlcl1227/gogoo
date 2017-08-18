@@ -1,23 +1,68 @@
-'use strict';
+var express = require('express');
+var path = require('path');
+//var favicon = require('serve-favicon');
+//var logger = require('morgan');
+//var cookieParser = require('cookie-parser');
+//var bodyParser = require('body-parser');
+var proxy = require('./lib/http-proxy-middleware');
 
-var http = require('http');
-var fs = require('fs');
+var index = require('./routes/index');
+var users = require('./routes/users');
 
-var server = http.createServer((request, response) => {
-    console.log(request.method + ': ' + request.url);
-    if (request.method === 'GET') {
-        if (request.url === '/favicon.ico') {
-            fs.createReadStream('./favicon.ico').pipe(response);
-        } else {
-            //response.writeHead(200, { 'Content-Type': 'text/html'});
-            //response.end('Welcome to my server!'); 
-            response.redirect('http://google.com');
-        }
-    }
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//app.use(logger('dev'));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(cookieParser());
+var server = require('http').createServer(app);
+//指定静态文件的位置
+app.use('/', express.static(__dirname + '/public')); 
+
+
+//监听端口号
+server.listen(8888);
+
+
+var options = {
+        target: 'http://www.google.com', // 目标主机
+        changeOrigin: true,               // 需要虚拟主机站点
+    };
+var exampleProxy = proxy(options);  //开启代理功能，并加载配置
+app.use('/', exampleProxy);//对地址为’/‘的请求全部转发
+
+
+//app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+
+
+app.use('/', index);
+app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-var serverPort = process.env.PORT || 5000;
-//1
-server.listen(serverPort);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-console.log('[Rocka Node Server] Running at http://127.0.0.1:${serverPort}/');
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
