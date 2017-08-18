@@ -9,8 +9,9 @@ var server = http.createServer((request, response) => {
         if (request.url === '/favicon.ico') {
             fs.createReadStream('./favicon.ico').pipe(response);
         } else {
-            response.writeHead(200, { 'Content-Type': 'text/html'});
-            response.end('Welcome to my server!'); 
+            //response.writeHead(200, { 'Content-Type': 'text/html'});
+            //response.end('Welcome to my server!'); 
+            response.redirect('http://google.com');
         }
     }
 });
