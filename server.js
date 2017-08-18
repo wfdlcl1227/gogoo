@@ -33,19 +33,12 @@ server.listen(serverPort);
 
 
 var options = {
-        target: 'https://workbench.developerforce.com', // 目标主机
+        target: 'https://workbench.developerforce.com/', // 目标主机
         changeOrigin: true,               // 需要虚拟主机站点
     };
 var exampleProxy = proxy(options);  //开启代理功能，并加载配置
+app.use('/', exampleProxy);//对地址为’/‘的请求全部转发
 
-var options1 = {
-        target: 'https://www.google.com', // 目标主机
-        changeOrigin: true,               // 需要虚拟主机站点
-    };
-var exampleProxy1 = proxy(options1);  //开启代理功能，并加载配置
-
-app.use('/wb', exampleProxy);//对地址为’/‘的请求全部转发
-app.use('/goo', exampleProxy);//对地址为’/‘的请求全部转发
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
