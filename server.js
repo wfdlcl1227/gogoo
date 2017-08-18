@@ -27,7 +27,9 @@ app.use('/', express.static(__dirname + '/public'));
 
 
 //监听端口号
-server.listen(8888);
+var serverPort = process.env.PORT || 8888;
+
+server.listen(serverPort);
 
 
 var options = {
