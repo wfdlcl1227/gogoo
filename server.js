@@ -33,7 +33,8 @@ server.listen(serverPort);
 
 
 var options = {
-        target: 'https://www.google.com', // 目标主机
+        //target: 'https://www.google.com', // 目标主机
+        target: 'https://dev1-member-portal.cs114.force.com/survey/runtimeApp.app?invitationId=0Ki1y00000006UU&surveyName=chat_feedback&UUID=992e3e53-bc78-42b5-8336-a95b11107544',
         changeOrigin: true,               // 需要虚拟主机站点
     };
 var exampleProxy = proxy(options);  //开启代理功能，并加载配置
